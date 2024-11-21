@@ -1,3 +1,1 @@
-import re
-print(1+1)
-re.search()
+print(5+5)
