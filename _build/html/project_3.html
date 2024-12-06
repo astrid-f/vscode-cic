@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>&lt;no title&gt; &#8212; Project 3 Lab</title>
+    <title>Hello world! &#8212; Project 3 Lab</title>
   
   
   
@@ -157,7 +157,7 @@
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1 current active">
                 <a class="reference internal" href="#">
-                    <no title>
+                    Hello world!
                 </a>
             </li>
         </ul>
@@ -277,9 +277,7 @@
 <button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
 </button>
-<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="fa-solid fa-list"></span>
-</button>
+
 </div></div>
       
     </div>
@@ -290,19 +288,11 @@
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1><no title></h1>
+    <h1>Hello world!</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
             
-            <div>
-                <h2> Contents </h2>
-            </div>
-            <nav aria-label="Page">
-                <ul class="simple visible nav section-nav flex-column">
-</ul>
-
-            </nav>
         </div>
     </div>
 </div>
@@ -312,19 +302,520 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <div class="cell docutils container">
+  <section class="tex2jax_ignore mathjax_ignore" id="hello-world">
+<h1>Hello world!<a class="headerlink" href="#hello-world" title="Permalink to this heading">#</a></h1>
+<p>I am currently working for the local government in my home country, which is in the process of relocating its capital city to a previously forested area. The government has justified this move by emphasizing the potential for urbanization to reduce regional economic disparities and promote balanced development across the nation. This has sparked my curiosity about the broader relationship between urbanization and regional economic growth, as I aim to understand whether such a strategy can truly achieve the intended outcomes.</p>
+<p>Let’s see if we can make use of this project to at least roughly see if there is a positive or negative correlation on that!</p>
+<p><strong>Dataset(s) to be used:</strong></p>
+<ol class="arabic simple">
+<li><p><a class="reference external" href="https://population.un.org/wup/Download/Files/WUP2018-F18-Total_Population_Annual.xls">Annual Total Population by Countries</a></p></li>
+</ol>
+<p><strong>Analysis question:</strong> Does urbanization reduce regional economic disparities in developing countries, and can relocating a capital city help promote balanced economic growth?</p>
+<p><strong>Columns that will (likely) be used:</strong></p>
+<ul class="simple">
+<li><p>Urban population (% of total population)</p></li>
+<li><p>Regional GDP per capita</p></li>
+<li><p>Urban and rural poverty rates</p></li>
+</ul>
+<p><strong>Columns to be used to merge/join them:</strong></p>
+<ul class="simple">
+<li><p>[Dataset 1] Country and Year</p></li>
+<li><p>[Dataset 2] Country and Year</p></li>
+</ul>
+<p><strong>Hypothesis</strong>: Urbanization helps to reduce regional economic disparities by redistributing economic activity to secondary cities and surrounding areas. Relocating a capital city can potentially amplify this effect if accompanied by infrastructure development and inclusive urban planning.</p>
+<p>As a starter, we will read the first dataset: Annual Urban Population from the United Nations Population Division.
+Since we get the dataset from United Nations in the form of excel file, we are using the excel reader.
+Before using the excel reader, when you are working with excel file in Python you might want to open them in microsoft excel first to identify if they have headers or any other unnecessary rows. In this file, the first 16 rows are just header so we want to skip them to make it easier to process the data.</p>
+<div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="mi">5</span><span class="o">+</span><span class="mi">6</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> <span class="c1">#you know the drill, importing the necessary stuff first and foremost.</span>
+
+<span class="n">file_url</span> <span class="o">=</span> <span class="s2">&quot;https://population.un.org/wup/Download/Files/WUP2018-F18-Total_Population_Annual.xls&quot;</span>
+
+<span class="n">total_pop</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="n">file_url</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>  <span class="c1">#reading the file, skipping the first 16 rows to access actual data</span>
+<span class="n">total_pop</span><span class="o">.</span><span class="n">head</span><span class="p">()</span> <span class="c1">#checking how it looked</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>11
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Index</th>
+      <th>Region, subregion, country or area</th>
+      <th>Note</th>
+      <th>Country\ncode</th>
+      <th>1950</th>
+      <th>1951</th>
+      <th>1952</th>
+      <th>1953</th>
+      <th>1954</th>
+      <th>1955</th>
+      <th>...</th>
+      <th>2041</th>
+      <th>2042</th>
+      <th>2043</th>
+      <th>2044</th>
+      <th>2045</th>
+      <th>2046</th>
+      <th>2047</th>
+      <th>2048</th>
+      <th>2049</th>
+      <th>2050</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>WORLD</td>
+      <td>NaN</td>
+      <td>900</td>
+      <td>2536274.721</td>
+      <td>2583816.786</td>
+      <td>2630584.384</td>
+      <td>2677230.358</td>
+      <td>2724302.468</td>
+      <td>2772242.535</td>
+      <td>...</td>
+      <td>9271063.273</td>
+      <td>9330845.890</td>
+      <td>9389655.929</td>
+      <td>9447454.649</td>
+      <td>9504209.572</td>
+      <td>9559909.195</td>
+      <td>9614545.440</td>
+      <td>9668093.432</td>
+      <td>9720525.979</td>
+      <td>9771822.753</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>More developed regions</td>
+      <td>a</td>
+      <td>901</td>
+      <td>814865.069</td>
+      <td>824212.665</td>
+      <td>834074.389</td>
+      <td>844263.515</td>
+      <td>854631.777</td>
+      <td>865069.444</td>
+      <td>...</td>
+      <td>1297774.840</td>
+      <td>1297994.139</td>
+      <td>1298159.433</td>
+      <td>1298276.382</td>
+      <td>1298349.044</td>
+      <td>1298382.202</td>
+      <td>1298376.623</td>
+      <td>1298327.412</td>
+      <td>1298226.562</td>
+      <td>1298068.585</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>Less developed regions</td>
+      <td>b</td>
+      <td>902</td>
+      <td>1721409.652</td>
+      <td>1759604.121</td>
+      <td>1796509.995</td>
+      <td>1832966.843</td>
+      <td>1869670.691</td>
+      <td>1907173.091</td>
+      <td>...</td>
+      <td>7973288.433</td>
+      <td>8032851.751</td>
+      <td>8091496.496</td>
+      <td>8149178.267</td>
+      <td>8205860.528</td>
+      <td>8261526.993</td>
+      <td>8316168.817</td>
+      <td>8369766.020</td>
+      <td>8422299.417</td>
+      <td>8473754.168</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>Least developed countries</td>
+      <td>c</td>
+      <td>941</td>
+      <td>195259.056</td>
+      <td>199052.136</td>
+      <td>202904.860</td>
+      <td>206885.020</td>
+      <td>211045.058</td>
+      <td>215421.063</td>
+      <td>...</td>
+      <td>1648390.597</td>
+      <td>1677916.857</td>
+      <td>1707547.911</td>
+      <td>1737266.944</td>
+      <td>1767059.061</td>
+      <td>1796910.693</td>
+      <td>1826811.700</td>
+      <td>1856754.484</td>
+      <td>1886733.520</td>
+      <td>1916741.581</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>Less developed regions, excluding least develo...</td>
+      <td>d</td>
+      <td>934</td>
+      <td>1526150.596</td>
+      <td>1560551.985</td>
+      <td>1593605.135</td>
+      <td>1626081.823</td>
+      <td>1658625.633</td>
+      <td>1691752.028</td>
+      <td>...</td>
+      <td>6324897.836</td>
+      <td>6354934.894</td>
+      <td>6383948.585</td>
+      <td>6411911.323</td>
+      <td>6438801.467</td>
+      <td>6464616.300</td>
+      <td>6489357.117</td>
+      <td>6513011.536</td>
+      <td>6535565.897</td>
+      <td>6557012.587</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 105 columns</p>
+</div></div></div>
+</div>
+<p>We can see that the total population data has “Region, subregion, country or area” column and years column with the number of population for each country as the value under it.</p>
+<p>Let’s clean the data first by ensuring that all column names are strings and strip the whitespace, checking and identifying the column, and filter out rows that are not country-level.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">total_pop</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">col</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">total_pop</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>  <span class="c1">#ensuring all column names are strings and strip whitespace</span>
+
+<span class="n">country_column</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">total_pop</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="s2">&quot;Region&quot;</span> <span class="ow">in</span> <span class="n">col</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>  <span class="c1">#identify the actual column name for country/region, asked chatgpt how to do this without hardcoding it by using the column name.</span>
+
+<span class="n">total_pop</span> <span class="o">=</span> <span class="n">total_pop</span><span class="p">[</span><span class="n">total_pop</span><span class="p">[</span><span class="s2">&quot;Index&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">notnull</span><span class="p">()]</span>  <span class="c1">#filter out rows that are not country-level data, which means rows that is in the index</span>
+<span class="n">total_pop</span><span class="o">.</span><span class="n">columns</span> <span class="c1">#checking column names to find the one I&#39;ll be using</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Index([&#39;Index&#39;, &#39;Region, subregion, country or area&#39;, &#39;Note&#39;, &#39;Country\ncode&#39;,
+       &#39;1950&#39;, &#39;1951&#39;, &#39;1952&#39;, &#39;1953&#39;, &#39;1954&#39;, &#39;1955&#39;,
+       ...
+       &#39;2041&#39;, &#39;2042&#39;, &#39;2043&#39;, &#39;2044&#39;, &#39;2045&#39;, &#39;2046&#39;, &#39;2047&#39;, &#39;2048&#39;, &#39;2049&#39;,
+       &#39;2050&#39;],
+      dtype=&#39;object&#39;, length=105)
 </pre></div>
 </div>
 </div>
 </div>
-<p>Create notebook for project 3</p>
+<p>Based on what I am trying to find out using these available data, I want to only look at 8 particular countries mentioned in Indonesia’s press release about moving its capital city that can be read <a class="reference external" href="https://ikn.go.id/storage/press-release/2019/en/eng-3-siaran-pers-indonesia-learns-from-brazils-experience-in-relocating-its-capital-city.pdf">here</a>.</p>
+<p>The 8 countries mentioned was:</p>
+<ol class="arabic simple">
+<li><p>Brazil (1960),</p></li>
+<li><p>Malaysia (1999),</p></li>
+<li><p>South Korea (2007),</p></li>
+<li><p>Kazakhstan (1997),</p></li>
+<li><p>Australia (1913),</p></li>
+<li><p>Pakistan (1963),</p></li>
+<li><p>Nigeria (1991), and</p></li>
+<li><p>Egypt (Ongoing)</p></li>
+</ol>
+<p>The year inside the bracket are the year when they moved their capital city. Since Egypt is still in an ongoing process, we cannot really see the progress yet. and since 1913 is waaay off before the available years in the dataset, we cannot analyze Australia too.
+So from now, let’s focus on the 6 countries by filtering the dataset!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">countries_of_interest</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Brazil&quot;</span><span class="p">,</span> <span class="s2">&quot;Malaysia&quot;</span><span class="p">,</span> <span class="s2">&quot;Dem. People&#39;s Republic of Korea&quot;</span><span class="p">,</span> <span class="s2">&quot;Kazakhstan&quot;</span><span class="p">,</span> <span class="s2">&quot;Pakistan&quot;</span><span class="p">,</span> <span class="s2">&quot;Nigeria&quot;</span><span class="p">]</span>
+
+<span class="n">filtered_totalpop</span> <span class="o">=</span> <span class="n">total_pop</span><span class="p">[</span><span class="n">total_pop</span><span class="p">[</span><span class="s1">&#39;Region, subregion, country or area&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">countries_of_interest</span><span class="p">)]</span>
+
+<span class="n">filtered_totalpop</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Index</th>
+      <th>Region, subregion, country or area</th>
+      <th>Note</th>
+      <th>Country\ncode</th>
+      <th>1950</th>
+      <th>1951</th>
+      <th>1952</th>
+      <th>1953</th>
+      <th>1954</th>
+      <th>1955</th>
+      <th>...</th>
+      <th>2041</th>
+      <th>2042</th>
+      <th>2043</th>
+      <th>2044</th>
+      <th>2045</th>
+      <th>2046</th>
+      <th>2047</th>
+      <th>2048</th>
+      <th>2049</th>
+      <th>2050</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>71</th>
+      <td>72</td>
+      <td>Nigeria</td>
+      <td>NaN</td>
+      <td>566</td>
+      <td>37859.744</td>
+      <td>38423.978</td>
+      <td>39035.145</td>
+      <td>39685.757</td>
+      <td>40370.373</td>
+      <td>41085.563</td>
+      <td>...</td>
+      <td>340610.467</td>
+      <td>348129.233</td>
+      <td>355723.613</td>
+      <td>363388.543</td>
+      <td>371119.359</td>
+      <td>378911.776</td>
+      <td>386762.397</td>
+      <td>394668.494</td>
+      <td>402627.873</td>
+      <td>410637.868</td>
+    </tr>
+    <tr>
+      <th>82</th>
+      <td>83</td>
+      <td>Dem. People's Republic of Korea</td>
+      <td>NaN</td>
+      <td>408</td>
+      <td>10549.472</td>
+      <td>10248.496</td>
+      <td>10049.029</td>
+      <td>9957.242</td>
+      <td>9972.436</td>
+      <td>10086.991</td>
+      <td>...</td>
+      <td>27030.232</td>
+      <td>27020.983</td>
+      <td>27007.159</td>
+      <td>26989.131</td>
+      <td>26967.265</td>
+      <td>26941.830</td>
+      <td>26913.047</td>
+      <td>26881.134</td>
+      <td>26846.286</td>
+      <td>26808.680</td>
+    </tr>
+    <tr>
+      <th>88</th>
+      <td>89</td>
+      <td>Kazakhstan</td>
+      <td>NaN</td>
+      <td>398</td>
+      <td>6702.991</td>
+      <td>6831.323</td>
+      <td>7041.797</td>
+      <td>7315.651</td>
+      <td>7636.830</td>
+      <td>7991.998</td>
+      <td>...</td>
+      <td>21758.673</td>
+      <td>21896.943</td>
+      <td>22035.402</td>
+      <td>22173.301</td>
+      <td>22309.977</td>
+      <td>22445.138</td>
+      <td>22578.426</td>
+      <td>22709.123</td>
+      <td>22836.340</td>
+      <td>22959.432</td>
+    </tr>
+    <tr>
+      <th>101</th>
+      <td>102</td>
+      <td>Pakistan</td>
+      <td>NaN</td>
+      <td>586</td>
+      <td>37542.376</td>
+      <td>37975.281</td>
+      <td>38483.891</td>
+      <td>39063.874</td>
+      <td>39711.643</td>
+      <td>40424.296</td>
+      <td>...</td>
+      <td>280687.458</td>
+      <td>283842.283</td>
+      <td>286951.906</td>
+      <td>290007.941</td>
+      <td>293003.264</td>
+      <td>295934.020</td>
+      <td>298797.474</td>
+      <td>301589.116</td>
+      <td>304304.572</td>
+      <td>306940.443</td>
+    </tr>
+    <tr>
+      <th>108</th>
+      <td>109</td>
+      <td>Malaysia</td>
+      <td>8</td>
+      <td>458</td>
+      <td>6109.915</td>
+      <td>6271.486</td>
+      <td>6450.083</td>
+      <td>6640.041</td>
+      <td>6837.358</td>
+      <td>7039.719</td>
+      <td>...</td>
+      <td>39899.761</td>
+      <td>40123.869</td>
+      <td>40341.496</td>
+      <td>40553.598</td>
+      <td>40760.928</td>
+      <td>40963.843</td>
+      <td>41162.327</td>
+      <td>41356.264</td>
+      <td>41545.333</td>
+      <td>41729.217</td>
+    </tr>
+    <tr>
+      <th>227</th>
+      <td>228</td>
+      <td>Brazil</td>
+      <td>NaN</td>
+      <td>76</td>
+      <td>53974.729</td>
+      <td>55619.224</td>
+      <td>57307.476</td>
+      <td>59030.858</td>
+      <td>60784.892</td>
+      <td>62569.196</td>
+      <td>...</td>
+      <td>231925.066</td>
+      <td>232197.512</td>
+      <td>232420.421</td>
+      <td>232595.537</td>
+      <td>232724.279</td>
+      <td>232807.383</td>
+      <td>232845.132</td>
+      <td>232837.778</td>
+      <td>232785.372</td>
+      <td>232688.044</td>
+    </tr>
+  </tbody>
+</table>
+<p>6 rows × 105 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">filtered_totalpop</span><span class="o">.</span><span class="n">columns</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Index([&#39;Index&#39;, &#39;Region, subregion, country or area&#39;, &#39;Note&#39;, &#39;Country\ncode&#39;,
+       &#39;1950&#39;, &#39;1951&#39;, &#39;1952&#39;, &#39;1953&#39;, &#39;1954&#39;, &#39;1955&#39;,
+       ...
+       &#39;2041&#39;, &#39;2042&#39;, &#39;2043&#39;, &#39;2044&#39;, &#39;2045&#39;, &#39;2046&#39;, &#39;2047&#39;, &#39;2048&#39;, &#39;2049&#39;,
+       &#39;2050&#39;],
+      dtype=&#39;object&#39;, length=105)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Select columns of interest</span>
+<span class="n">columns_of_interest</span> <span class="o">=</span> <span class="p">[</span><span class="n">country_column</span><span class="p">,</span> <span class="s1">&#39;1960&#39;</span><span class="p">,</span> <span class="s1">&#39;1999&#39;</span><span class="p">,</span> <span class="s1">&#39;2007&#39;</span><span class="p">,</span> <span class="s1">&#39;1997&#39;</span><span class="p">,</span> <span class="s1">&#39;1963&#39;</span><span class="p">]</span>  <span class="c1"># Adjust as needed</span>
+<span class="n">filtered_totalpop</span> <span class="o">=</span> <span class="n">filtered_totalpop</span><span class="p">[</span><span class="n">columns_of_interest</span><span class="p">]</span>
+
+<span class="c1"># Rename the main country column for clarity</span>
+<span class="n">filtered_totalpop</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="n">country_column</span><span class="p">:</span> <span class="s1">&#39;Country&#39;</span><span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Filter the dataset for specific countries</span>
+<span class="n">countries_of_interest</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Brazil&quot;</span><span class="p">,</span> <span class="s2">&quot;Malaysia&quot;</span><span class="p">,</span> <span class="s2">&quot;Dem. People&#39;s Republic of Korea&quot;</span><span class="p">,</span> <span class="s2">&quot;Kazakhstan&quot;</span><span class="p">,</span> <span class="s2">&quot;Pakistan&quot;</span><span class="p">,</span> <span class="s2">&quot;Nigeria&quot;</span><span class="p">]</span>
+<span class="n">filtered_totalpop</span> <span class="o">=</span> <span class="n">filtered_totalpop</span><span class="p">[</span><span class="n">filtered_totalpop</span><span class="p">[</span><span class="s1">&#39;Country&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">countries_of_interest</span><span class="p">)]</span>
+<span class="n">filtered_totalpop</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">KeyError</span><span class="g g-Whitespace">                                  </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">114</span><span class="p">],</span> <span class="n">line</span> <span class="mi">3</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># Select columns of interest</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">columns_of_interest</span> <span class="o">=</span> <span class="p">[</span><span class="n">country_column</span><span class="p">,</span> <span class="s1">&#39;1960&#39;</span><span class="p">,</span> <span class="s1">&#39;1999&#39;</span><span class="p">,</span> <span class="s1">&#39;2007&#39;</span><span class="p">,</span> <span class="s1">&#39;1997&#39;</span><span class="p">,</span> <span class="s1">&#39;1963&#39;</span><span class="p">]</span>  <span class="c1"># Adjust as needed</span>
+<span class="ne">----&gt; </span><span class="mi">3</span> <span class="n">filtered_totalpop</span> <span class="o">=</span> <span class="n">filtered_totalpop</span><span class="p">[</span><span class="n">columns_of_interest</span><span class="p">]</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="c1"># Rename the main country column for clarity</span>
+<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="n">filtered_totalpop</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="n">country_column</span><span class="p">:</span> <span class="s1">&#39;Country&#39;</span><span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="nn">File /opt/anaconda3/lib/python3.12/site-packages/pandas/core/frame.py:4108,</span> in <span class="ni">DataFrame.__getitem__</span><span class="nt">(self, key)</span>
+<span class="g g-Whitespace">   </span><span class="mi">4106</span>     <span class="k">if</span> <span class="n">is_iterator</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+<span class="g g-Whitespace">   </span><span class="mi">4107</span>         <span class="n">key</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+<span class="ne">-&gt; </span><span class="mi">4108</span>     <span class="n">indexer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">_get_indexer_strict</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s2">&quot;columns&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+<span class="g g-Whitespace">   </span><span class="mi">4110</span> <span class="c1"># take() does not accept boolean indexers</span>
+<span class="g g-Whitespace">   </span><span class="mi">4111</span> <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">indexer</span><span class="p">,</span> <span class="s2">&quot;dtype&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="o">==</span> <span class="nb">bool</span><span class="p">:</span>
+
+<span class="nn">File /opt/anaconda3/lib/python3.12/site-packages/pandas/core/indexes/base.py:6200,</span> in <span class="ni">Index._get_indexer_strict</span><span class="nt">(self, key, axis_name)</span>
+<span class="g g-Whitespace">   </span><span class="mi">6197</span> <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">6198</span>     <span class="n">keyarr</span><span class="p">,</span> <span class="n">indexer</span><span class="p">,</span> <span class="n">new_indexer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reindex_non_unique</span><span class="p">(</span><span class="n">keyarr</span><span class="p">)</span>
+<span class="ne">-&gt; </span><span class="mi">6200</span> <span class="bp">self</span><span class="o">.</span><span class="n">_raise_if_missing</span><span class="p">(</span><span class="n">keyarr</span><span class="p">,</span> <span class="n">indexer</span><span class="p">,</span> <span class="n">axis_name</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">6202</span> <span class="n">keyarr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="n">indexer</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">6203</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">Index</span><span class="p">):</span>
+<span class="g g-Whitespace">   </span><span class="mi">6204</span>     <span class="c1"># GH 42790 - Preserve name from an Index</span>
+
+<span class="nn">File /opt/anaconda3/lib/python3.12/site-packages/pandas/core/indexes/base.py:6252,</span> in <span class="ni">Index._raise_if_missing</span><span class="nt">(self, key, indexer, axis_name)</span>
+<span class="g g-Whitespace">   </span><span class="mi">6249</span>     <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;None of [</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">] are in the [</span><span class="si">{</span><span class="n">axis_name</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">6251</span> <span class="n">not_found</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ensure_index</span><span class="p">(</span><span class="n">key</span><span class="p">)[</span><span class="n">missing_mask</span><span class="o">.</span><span class="n">nonzero</span><span class="p">()[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
+<span class="ne">-&gt; </span><span class="mi">6252</span> <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">not_found</span><span class="si">}</span><span class="s2"> not in index&quot;</span><span class="p">)</span>
+
+<span class="ne">KeyError</span>: &quot;[&#39;Region, subregion, country or area&#39;] not in index&quot;
+</pre></div>
+</div>
+</div>
+</div>
+<p>5 data points GDP, 5 data points kemiskinan
+2 line charts (GDP and Urban poverty)</p>
+</section>
 
     <script type="text/x-thebe-config">
     {
@@ -362,22 +853,6 @@
             </div>
             
             
-              
-                <dialog id="pst-secondary-sidebar-modal"></dialog>
-                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
-
-
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> Contents
-  </div>
-  <nav class="bd-toc-nav page-toc">
-    <ul class="simple visible nav section-nav flex-column">
-</ul>
-
-  </nav></div>
-
-</div></div>
               
             
           </div>
